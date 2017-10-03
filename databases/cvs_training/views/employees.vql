@@ -1,0 +1,54 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC employees
+    DATASOURCENAME=classic2014
+    CATALOGNAME = '${databases.cvs_training.views.jdbc.employees.CATALOGNAME}'
+    RELATIONNAME='employees' 
+    OUTPUTSCHEMA (
+        "employeeNumber" = 'employeeNumber' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='INT')  ESCAPE NOT NULL SORTABLE,
+        "lastName" = 'lastName' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        "firstName" = 'firstName' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        extension = 'extension' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='10', sourcetypeid='12', sourcetypename='VARCHAR')  NOT NULL SORTABLE,
+        email = 'email' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='100', sourcetypeid='12', sourcetypename='VARCHAR')  NOT NULL SORTABLE,
+        "officeCode" = 'officeCode' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='10', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        "reportsTo" = 'reportsTo' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='INT')  ESCAPE SORTABLE,
+        "jobTitle" = 'jobTitle' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE
+    )
+    CONSTRAINT 'PRIMARY' PRIMARY KEY ( 'employeeNumber' )
+    CONSTRAINT 'employees_ibfk_1' FOREIGN KEY ( 'reportsTo' ) 
+    REFERENCES 'classicmodels2014'.'employees'( 'employeeNumber' )  ON UPDATE NO ACTION  ON DELETE NO ACTION NOT DEFERRABLE 
+    CONSTRAINT 'employees_ibfk_2' FOREIGN KEY ( 'officeCode' ) 
+    REFERENCES 'classicmodels2014'.'offices'( 'officeCode' )  ON UPDATE NO ACTION  ON DELETE NO ACTION NOT DEFERRABLE 
+    INDEX 'PRIMARY' CLUSTER UNIQUE PRIMARY ( 'employeeNumber' )
+    INDEX 'officeCode' OTHER ( 'officeCode' )
+    INDEX 'reportsTo' OTHER ( 'reportsTo' );
+
+CREATE OR REPLACE TABLE employees I18N ist (
+        "employeeNumber":int (sourcetypedecimals = '0', sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '4'), 
+        "lastName":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "firstName":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        extension:text (sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '12'), 
+        email:text (sourcetyperadix = '10', sourcetypesize = '100', description = '', sourcetypeid = '12'), 
+        "officeCode":text (sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '12'), 
+        "reportsTo":int (sourcetypedecimals = '0', sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '4'), 
+        "jobTitle":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12')
+    )
+    CONSTRAINT 'PRIMARY' PRIMARY KEY ( 'employeeNumber' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD employees(
+        I18N ist
+        CONSTRAINTS (
+             ADD "employeeNumber" (any) OPT ANY
+             ADD "lastName" (any) OPT ANY
+             ADD "firstName" (any) OPT ANY
+             ADD extension (any) OPT ANY
+             ADD email (any) OPT ANY
+             ADD "officeCode" (any) OPT ANY
+             ADD "reportsTo" (any) OPT ANY
+             ADD "jobTitle" (any) OPT ANY
+        )
+        OUTPUTLIST (email, "employeeNumber", extension, "firstName", "jobTitle", "lastName", "officeCode", "reportsTo"
+        )
+        WRAPPER (jdbc employees)
+    );
+

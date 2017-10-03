@@ -1,0 +1,12 @@
+﻿CREATE OR REPLACE MAP i18n ist (
+    'country' = 'IN'
+    'datepattern' = 'yyyy-MM-dd h:mm:ss a'
+    'datesubtypepattern' = 'yyyy-MM-dd'
+    'doubledecimalposition' = '2'
+    'doubledecimalseparator' = ''
+    'doublegroupseparator' = ''
+    'language' = 'en'
+    'timepattern' = 'DAY'
+    'timezone' = 'IST'
+);
+

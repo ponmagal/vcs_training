@@ -1,0 +1,33 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE DATASOURCE JDBC classic2014
+    DRIVERCLASSNAME = 'com.mysql.jdbc.Driver'
+    DATABASEURI = '${databases.cvs_training.datasources.jdbc.classic2014.DATABASEURI}'
+    USERNAME = '${databases.cvs_training.datasources.jdbc.classic2014.USERNAME}'
+    USERPASSWORD = '${databases.cvs_training.datasources.jdbc.classic2014.USERPASSWORD}' ${databases.cvs_training.datasources.jdbc.classic2014.USERPASSWORD.ENCRYPTED}
+    CLASSPATH = 'C:\DenodoPlatform\extensions\thirdparty\lib\mysql-connector-java-5.1.40-bin.jar'
+    DATABASENAME = 'mysql'
+    DATABASEVERSION = '5'
+    FETCHSIZE = 1000
+    BATCHINSERTSIZE = 200
+    VALIDATIONQUERY = 'Select 1'
+    INITIALSIZE = 4
+    MAXIDLE = -1
+    MINIDLE = 0
+    MAXACTIVE = 20
+    EXHAUSTEDACTION = 1
+    TESTONBORROW = true
+    TESTONRETURN = false
+    TESTWHILEIDLE = false
+    TIMEBETWEENEVICTION = -1
+    NUMTESTPEREVICTION = 3
+    MINEVICTABLETIME = 1800000
+    POOLPREPAREDSTATEMENTS = false
+    MAXSLEEPINGPS = 4
+    INITIALCAPACITYPS = 8
+    PROPERTIES ('vdp.streamRows'='yes')
+    USEEXTERNALTABLES ( 
+     ONMOVEREAD = false,
+     ONMOVEWRITE = true
+    )
+    DATAMOVEMENT_TARGET=true;
+

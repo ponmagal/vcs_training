@@ -1,0 +1,66 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC customers
+    DATASOURCENAME=classic2014
+    CATALOGNAME = '${databases.cvs_training.views.jdbc.customers.CATALOGNAME}'
+    RELATIONNAME='customers' 
+    OUTPUTSCHEMA (
+        "customerNumber" = 'customerNumber' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='INT')  ESCAPE NOT NULL SORTABLE,
+        "customerName" = 'customerName' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        "contactLastName" = 'contactLastName' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        "contactFirstName" = 'contactFirstName' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        phone = 'phone' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  NOT NULL SORTABLE,
+        "addressLine1" = 'addressLine1' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE NOT NULL SORTABLE,
+        "addressLine2" = 'addressLine2' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE SORTABLE,
+        city = 'city' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  NOT NULL SORTABLE,
+        state = 'state' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  SORTABLE,
+        "postalCode" = 'postalCode' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='15', sourcetypeid='12', sourcetypename='VARCHAR')  ESCAPE SORTABLE,
+        country = 'country' :'java.lang.String' (OPT) (sourcetyperadix='10', sourcetypesize='50', sourcetypeid='12', sourcetypename='VARCHAR')  NOT NULL SORTABLE,
+        "salesRepEmployeeNumber" = 'salesRepEmployeeNumber' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='INT')  ESCAPE SORTABLE,
+        "creditLimit" = 'creditLimit' :'java.math.BigDecimal' (OPT) (sourcetypedecimals='2', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='3', sourcetypename='DECIMAL')  ESCAPE SORTABLE
+    )
+    CONSTRAINT 'PRIMARY' PRIMARY KEY ( 'customerNumber' )
+    CONSTRAINT 'customers_ibfk_1' FOREIGN KEY ( 'salesRepEmployeeNumber' ) 
+    REFERENCES 'classicmodels2014'.'employees'( 'employeeNumber' )  ON UPDATE NO ACTION  ON DELETE NO ACTION NOT DEFERRABLE 
+    INDEX 'PRIMARY' CLUSTER UNIQUE PRIMARY ( 'customerNumber' )
+    INDEX 'salesRepEmployeeNumber' OTHER ( 'salesRepEmployeeNumber' );
+
+CREATE OR REPLACE TABLE customers I18N ist (
+        "customerNumber":int (sourcetypedecimals = '0', sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '4'), 
+        "customerName":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "contactLastName":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "contactFirstName":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        phone:text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "addressLine1":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "addressLine2":text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        city:text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        state:text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "postalCode":text (sourcetyperadix = '10', sourcetypesize = '15', description = '', sourcetypeid = '12'), 
+        country:text (sourcetyperadix = '10', sourcetypesize = '50', description = '', sourcetypeid = '12'), 
+        "salesRepEmployeeNumber":int (sourcetypedecimals = '0', sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '4'), 
+        "creditLimit":decimal (sourcetypedecimals = '2', sourcetyperadix = '10', sourcetypesize = '10', description = '', sourcetypeid = '3')
+    )
+    CONSTRAINT 'PRIMARY' PRIMARY KEY ( 'customerNumber' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD customers(
+        I18N ist
+        CONSTRAINTS (
+             ADD "customerNumber" (any) OPT ANY
+             ADD "customerName" (any) OPT ANY
+             ADD "contactLastName" (any) OPT ANY
+             ADD "contactFirstName" (any) OPT ANY
+             ADD phone (any) OPT ANY
+             ADD "addressLine1" (any) OPT ANY
+             ADD "addressLine2" (any) OPT ANY
+             ADD city (any) OPT ANY
+             ADD state (any) OPT ANY
+             ADD "postalCode" (any) OPT ANY
+             ADD country (any) OPT ANY
+             ADD "salesRepEmployeeNumber" (any) OPT ANY
+             ADD "creditLimit" (any) OPT ANY
+        )
+        OUTPUTLIST ("addressLine1", "addressLine2", city, "contactFirstName", "contactLastName", country, "creditLimit", "customerName", "customerNumber", phone, "postalCode", "salesRepEmployeeNumber", state
+        )
+        WRAPPER (jdbc customers)
+    );
+
